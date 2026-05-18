@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio Académico | Liliana Canto</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- PDF.js para visualizar PDFs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    
+    <!-- SUPABASE SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <!-- CABECERA CON LOGO Y NAVEGACIÓN -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-section">
+                <div class="robot-logo">
+                    <img src="logo.png" 
+                         alt="Developer" 
+                         style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
+                <div class="logo-text">
+                    <span class="facultad">FACULTAD DE INGENIERÍA</span>
+                    <span class="carrera">Sistemas y Computación</span>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <a href="#" class="nav-link active" data-page="inicio">INICIO</a>
+                <a href="#" class="nav-link" data-page="trabajos">TRABAJOS</a>
+                <a href="#" class="nav-link" data-page="login">LOGIN</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main id="app-container">
+        <!-- VISTA INICIO -->
+        <section id="inicio-page" class="page active">
+            <div class="hero-section">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <div class="greeting">
+                            <h2>¡Bienvenidos a mi portafolio!</h2>
+                        </div>
+                        <h1 class="student-name">LILIANA PAMELA CANTO ROJAS</h1>
+                        <div class="course-badge">
+                            <i class="fas fa-database"></i>
+                            <span>Base de Datos II</span>
+                            <button id="sobreMiBtnInicio" class="sobre-mi-btn-small">
+                                <i class="fas fa-user"></i> Sobre Mí
+                            </button>
+                        </div>
+                        <div class="portfolio-description">
+                            <p class="main-quote">"Registro académico de mi trayectoria en el curso"</p>
+                            <p class="description-text">
+                                En este portafolio documentaré todos los avances realizados durante el ciclo académico. 
+                                Cada semana exploraremos un nuevo tema relacionado con bases de datos avanzadas.
+                            </p>
+                        </div>
+                        <div class="stats-container">
+                            <div class="stat-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>16 Semanas</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-layer-group"></i>
+                                <span>4 Unidades</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-laptop-code"></i>
+                                <span>Ing. Sistemas</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-robot">
+                        <div class="robot-avatar">
+                            <i class="fas fa-robot"></i>
+                            <div class="robot-glow"></div>
+                        </div>
+                        <div class="floating-elements">
+                            <i class="fas fa-database floating-icon"></i>
+                            <i class="fas fa-code floating-icon"></i>
+                            <i class="fas fa-cloud-upload-alt floating-icon"></i>
+                            <i class="fas fa-chart-line floating-icon"></i>
+                            <i class="fas fa-brain floating-icon"></i>
+                            <i class="fas fa-shield-alt floating-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROGRESO -->
+            <div class="quick-progress">
+                <h3><i class="fas fa-chart-simple"></i> Progreso General del Curso</h3>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                </div>
+                <div class="progress-stats">
+                    <span id="progressText">0 de 16 semanas completadas</span>
+                    <span class="progress-percentage" id="progressPercentage">0%</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISTA TRABAJOS -->
+        <section id="trabajos-page" class="page">
+            <div class="trabajos-header">
+                <h2><i class="fas fa-folder-tree"></i> Mis Trabajos Académicos</h2>
+                <p>Organizados por unidades y semanas según el sílabo del curso</p>
+                </button>
+            </div>
+            
+            <div id="unidadesContainer" class="unidades-container">
+                <!-- Se llenará dinámicamente -->
+            </div>
+        </section>
+
+        <!-- VISTA SOBRE MÍ -->
+        <section id="sobremi-page" class="page">
+            <div class="sobremi-container">
+                <div class="sobremi-card">
+                    <div class="sobremi-header">
+                        <h2><i class="fas fa-user-astronaut"></i> Sobre Mí</h2>
+                        <button id="closeSobremiBtn" class="close-sobremi-btn">
+                            <i class="fas fa-arrow-left"></i> Volver
+                        </button>
+                    </div>
+                    
+                    <div class="sobremi-content">
+                        <div class="profile-section">
+                            <div class="profile-photo">
+                                <div class="photo-placeholder">
+                                    <img id="profileImage" src="TU_FOTO_AQUI.jpeg" alt="Liliana Canto" class="profile-img">
+                                </div>
+                            </div>
+                            <div class="profile-info">
+                                <h3>⋆.˚✮ LILY ✮˚.⋆</h3>
+                                <p class="profile-title">Estudiante de Ingeniería de Sistemas</p>
+                                <p class="profile-university">V CICLO - A1</p>
+                            </div>
+                        </div>
+
+                        <div class="vision-section">
+                            <div class="section-icon"><i class="fas fa-eye"></i></div>
+                            <div class="section-text">
+                                <h4>Mi Visión en este Curso</h4>
+                                <p>Mi objetivo es dominar los conceptos avanzados de bases de datos para diseñar sistemas eficientes y escalables. Quiero aplicar estos conocimientos en proyectos reales que resuelvan problemas de la industria, especialmente en optimización de consultas y manejo de grandes volúmenes de datos. Al finalizar el curso, aspiro a desarrollar soluciones innovadoras que integren bases de datos tradicionales con tecnologías emergentes como Big Data e Inteligencia Artificial.</p>
+                            </div>
+                        </div>
+
+                        <div class="hobbies-section">
+                            <div class="section-icon"><i class="fas fa-heart"></i></div>
+                            <div class="section-text">
+                                <h4>Mis Gustos e Intereses</h4>
+                                <div class="hobbies-grid">
+                                    <span class="hobby-tag"><i class="fas fa-code"></i> Programación</span>
+                                    <span class="hobby-tag"><i class="fas fa-database"></i> Bases de Datos</span>
+                                    <span class="hobby-tag"><i class="fas fa-music"></i> Lana Del Rey</span>
+                                    <span class="hobby-tag"><i class="fas fa-book"></i> Lectura</span>
+                                    <span class="hobby-tag"><i class="fas fa-palette"></i> Diseño UI/UX</span>
+                                    <span class="hobby-tag"><i class="fas fa-cloud-sun"></i> Naturaleza</span>
+                                    <span class="hobby-tag"><i class="fas fa-camera"></i> Fotografía</span>
+                                    <span class="hobby-tag"><i class="fas fa-mug-hot"></i> Café</span>
+                                    <span class="hobby-tag"><i class="fas fa-gamepad"></i> Videojuegos</span>
+                                    <span class="hobby-tag"><i class="fas fa-plane"></i> Viajar</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="music-player-section">
+                            <div class="music-player">
+                                <div class="music-icon">
+                                    <i class="fas fa-headphones"></i>
+                                </div>
+                                <div class="music-info">
+                                    <h4>Video Games ☁️</h4>
+                                    <p>Lana Del Rey</p>
+                                </div>
+                                <button id="playMusicBtn" class="play-music-btn">
+                                    <i class="fas fa-play"></i> Reproducir
+                                </button>
+                                <button id="stopMusicBtn" class="stop-music-btn" style="display: none;">
+                                    <i class="fas fa-stop"></i> Detener
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="quote-section">
+                            <p>"No tenemos nada que perder, nada que ganar, nada que desearamos más, excepto hacer de nuestras vidas una obra de arte. Vive rápido, muere joven, se salvaje y diviértete." 🌷</p>
+                            <small>Lana del Rey</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISTA LOGIN -->
+        <section id="login-page" class="page">
+            <div class="login-container">
+                <div class="login-card">
+                    <div class="login-header">
+                        <i class="fas fa-user-shield"></i>
+                        <h2>Acceso Administrativo</h2>
+                    </div>
+                    <form id="loginForm" class="login-form">
+                        <div class="form-group">
+                            <label for="username"><i class="fas fa-user"></i> Usuario</label>
+                            <input type="text" id="username" placeholder="admin" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password"><i class="fas fa-lock"></i> Contraseña</label>
+                            <input type="password" id="password" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn-login">
+                            <i class="fas fa-sign-in-alt"></i> Ingresar al Sistema
+                        </button>
+                    </form> 
+                </div>
+            </div>
+        </section>
+
+        <!-- PANEL DE ADMINISTRACIÓN -->
+        <section id="admin-page" class="page">
+            <div class="admin-container">
+                <div class="admin-header">
+                    <h2><i class="fas fa-cog"></i> Panel de Administración</h2>
+                    <button id="logoutBtn" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                    </button>
+                </div>
+                
+                <div class="admin-content">
+                    <div class="upload-section">
+                        <h3><i class="fas fa-cloud-upload-alt"></i> Agregar Trabajo de Semana</h3>
+                        <form id="uploadForm" class="upload-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Unidad</label>
+                                    <select id="unidadSelect" required>
+                                        <option value="">Seleccionar unidad</option>
+                                        <option value="1">Unidad I - Introducción a la arquitectura de B.D</option>
+                                        <option value="2">Unidad II - SQL Avanzado</option>
+                                        <option value="3">Unidad III - Transacciones y Concurrencia</option>
+                                        <option value="4">Unidad IV - NoSQL y Tendencias</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Semana</label>
+                                    <select id="semanaSelect" required>
+                                        <option value="">Seleccionar semana</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Título de la Semana</label>
+                                <input type="text" id="tituloSemana" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Descripción</label>
+                                <textarea id="descripcionSemana" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Archivos</label>
+                                <div class="file-upload-container" onclick="document.getElementById('archivosInput').click()">
+                                    <input type="file" id="archivosInput" accept=".pdf,.ppt,.pptx,.doc,.docx,.jpg,.jpeg,.png,.txt,.zip" multiple style="display: none;">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Haz clic para seleccionar archivos</p>
+                                    <div id="filesPreview" class="files-preview"></div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-upload">
+                                <i class="fas fa-save"></i> Guardar Trabajo
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="semanas-list-section">
+                        <h3><i class="fas fa-list-check"></i> Semanas Configuradas</h3>
+                        <div id="semanasList" class="semanas-list"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal para ver detalles y PDFs -->
+    <div id="modalSemana" class="modal-semana">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitulo"></h2>
+                <button class="modal-close" onclick="app.cerrarModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-info">
+                    <p id="modalDescripcion"></p>
+                </div>
+                <div class="modal-archivos">
+                    <h4><i class="fas fa-paperclip"></i> Archivos adjuntos:</h4>
+                    <div id="modalArchivosList" class="archivos-list"></div>
+                </div>
+                <!-- Visor PDF -->
+                <div id="pdfViewer" class="pdf-viewer" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #f0f0f0; padding: 12px; border-radius: 10px;">
+                        <h4 id="pdfTitle" style="margin: 0; color: #6B21A8;"></h4>
+                        <div style="display: flex; gap: 8px;">
+                            <button id="cerrarVisorBtn" style="padding: 8px 16px; background: #EF4444; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                                <i class="fas fa-times"></i> Cerrar
+                            </button>
+                            <button id="zoomOutBtn" style="padding: 8px 12px; background: linear-gradient(135deg, #F093FB 0%, #F5576C 100%); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                                <i class="fas fa-search-minus"></i> -
+                            </button>
+                            <button id="zoomInBtn" style="padding: 8px 12px; background: linear-gradient(135deg, #F093FB 0%, #F5576C 100%); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                                <i class="fas fa-search-plus"></i> +
+                            </button>
+                        </div>
+                    </div>
+                    <div style="max-height: 500px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 8px; background: #f5f5f5;">
+                        <canvas id="pdfCanvas" style="width: 100%;"></canvas>
+                    </div>
+                    <div style="display: flex; justify-content: center; gap: 20px; margin-top: 15px; padding: 10px;">
+                        <button id="prevPageBtn" style="padding: 8px 20px; background: linear-gradient(135deg, #F093FB 0%, #F5576C 100%); color: white; border: none; border-radius: 25px; cursor: pointer;">
+                            <i class="fas fa-chevron-left"></i> Anterior
+                        </button>
+                        <span id="pageInfo" style="line-height: 36px; font-weight: 500;">Página 1 de 1</span>
+                        <button id="nextPageBtn" style="padding: 8px 20px; background: linear-gradient(135deg, #F093FB 0%, #F5576C 100%); color: white; border: none; border-radius: 25px; cursor: pointer;">
+                            Siguiente <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-github" onclick="window.open('https://github.com/Liliana-CR/Mi_Portafolio', '_blank')">
+                    <i class="fab fa-github"></i> Ver repositorio
+                </button>
+                <button class="btn-cerrar" onclick="app.cerrarModal()">
+                    <i class="fas fa-times"></i> Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ASISTENTE FLOTANTE -->
+    <div id="floatingAssistant" class="floating-assistant">
+        <div class="assistant-toggle" id="assistantToggle">
+            <div class="assistant-avatar">
+                <i class="fas fa-robot"></i>
+            </div>
+            <span class="assistant-badge">AI</span>
+            <div class="assistant-pulse"></div>
+        </div>
+        <div class="assistant-window" id="assistantWindow" style="display: none;">
+            <div class="assistant-header">
+                <div class="assistant-header-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="assistant-header-info">
+                    <h4>LilyBot - Asistente Virtual</h4>
+                    <div class="assistant-status">
+                        <span class="status-led"></span>
+                        <span>En línea</span>
+                    </div>
+                </div>
+                <button id="closeAssistant" class="close-assistant">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="assistant-messages" id="assistantMessages"></div>
+            <div class="assistant-input-area">
+                <input type="text" id="assistantInput" placeholder="Escribe tu pregunta..." class="assistant-input">
+                <button id="sendAssistantMsg" class="send-assistant">
+                    <i class="fas fa-paper-plane"></i> Enviar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUDIO -->
+    <audio id="lanaMusic" loop preload="auto">
+        <source src="video-games.mp3" type="audio/mpeg">
+    </audio>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p>© 2026 | Ingeniería de Sistemas | Portafolio Académico | Base de Datos II</p>
+        </div>
+    </footer>
+
+    <script src="./script.js"></script>
+</body>
+</html>
